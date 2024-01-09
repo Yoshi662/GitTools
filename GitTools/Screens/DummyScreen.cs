@@ -13,7 +13,7 @@ namespace GitTools.Screens
                 new ExitOption(),
                 ];
 
-            new Menu(options).ShowAndSelect();
+            new Menu(options).AskAndSelect();
         }
     }
 }

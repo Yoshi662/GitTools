@@ -19,7 +19,7 @@ namespace GitTools.Screens
         {
             Menu menu = new(_options);
             menu.Config.Title = MenuUtils.GetRepoInfoTitle;
-            menu.ShowAndSelect();
+            menu.AskAndSelect();
         }
     }
 }

@@ -8,16 +8,17 @@ namespace GitTools.Menus
     {
         List<MenuOption> Options;
         public MenuConfiguration Config;
-
-        public Menu(IEnumerable<MenuOption> options)
-        {
-            Options = options.ToList();
-            Config = new(
+        public static MenuConfiguration DefaultMenuConfig = new(
                 MenuUtils.GetTitle,
                 true,
                 new(Color.White, null, Decoration.Underline),
                 true
                 );
+
+        public Menu(IEnumerable<MenuOption> options)
+        {
+            Options = options.ToList();
+            Config = DefaultMenuConfig;
             TryAddBack();
         }
 
@@ -34,7 +35,12 @@ namespace GitTools.Menus
                 Options.Add(new ExitOption());
         }
 
-        public void ShowAndSelect()
+        public string AskAndSelect()
+        {
+            return Select(Ask());
+        }
+
+        public string Ask()
         {
             string[] choicelist = Options.Select(o => o.MarkupOptionName).ToArray();
             AnsiConsole.Clear();
@@ -45,10 +51,16 @@ namespace GitTools.Menus
                     .HighlightStyle(new Style(Color.White, null, Decoration.Underline))
             );
 
-            MenuOption selectedOption = Options.Find(o => o.MarkupOptionName == response);
+            return response;
+        }
+
+        public string Select(string option)
+        {
+            MenuOption selectedOption = Options.Find(o => o.MarkupOptionName == option);
             selectedOption.Command.Run();
-            if (selectedOption.Command is ExitCommand) return;
-            if (Config.ShowMenuAgainOnCompletedCommand) ShowAndSelect();
+            if (selectedOption.Command is ExitCommand) return selectedOption.OptionName;
+            if (Config.ShowMenuAgainOnCompletedCommand) AskAndSelect();
+            return selectedOption.OptionName;
         }
     }
 }

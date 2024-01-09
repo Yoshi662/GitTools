@@ -2,6 +2,6 @@
 {
     public interface IMenu
     {
-        public void ShowAndSelect();
+        public string AskAndSelect();
     }
 }

@@ -13,17 +13,24 @@ namespace GitTools.Screens
             new MenuOption("Operations for a Single Repository", new OpenScreenCommand(new OperationsSingleRepoScreen()))
             ];
 
-        public void Show()
+        public MainScreen()
         {
             if (!Git.GitOperations.Exists())
             {
                 AnsiConsole.MarkupLine("[red]Git is not installed[/]");
-                return;
+                _options.RemoveRange(1, 2);
             }
+        }
 
+        public void Show()
+        {
             Menu menu = new(_options);
             menu.Config.Title = MenuUtils.GetRepoInfoTitle;
-            menu.ShowAndSelect();
+            menu.Config.ShowMenuAgainOnCompletedCommand = false;
+            if(menu.AskAndSelect() != "Exit")
+            {
+                Show();
+            }
         }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using GitTools.Entities;
+using GitTools.Menus;
+
+using Spectre.Console;
 
 namespace GitTools.Screens
 {
@@ -22,7 +25,27 @@ namespace GitTools.Screens
 
         public void Show()
         {
-            throw new NotImplementedException();
+
+        }
+
+        private void SelectRepoOperations()
+        {
+
+        }
+
+        private void SelectRepo()
+        {
+            Style cleanStyle = new(Color.Yellow4);
+            Style dirtyStyle = new(Color.Orange4);
+
+            List<MenuOption> options = _manager.RepositoryList
+                .Select(r => 
+                new MenuOption(r.LocalPath){
+                    OptionStyle = r.IsClean ? cleanStyle : dirtyStyle
+                    }
+                )
+                .ToList();
+            _selectedRepo = new Menu(options).Ask();
         }
     }
 }

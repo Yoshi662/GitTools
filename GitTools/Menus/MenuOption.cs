@@ -11,6 +11,11 @@ namespace GitTools.Menus
             Command = command;
         }
 
+        public MenuOption(string optionName)
+        {
+            OptionName = optionName;
+        }
+
         public string OptionName { get; init; }
         public ICommand Command { get; init; }
         public Style OptionStyle { get; init; } = new(Color.Blue);

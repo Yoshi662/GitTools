@@ -12,7 +12,9 @@ namespace GitTools.Screens
             new MenuOption("Add a Repository", new AddRepositoryCommand()),
             new MenuOption("Scans and adds a folder", new AddFolderCommand()),
             new MenuOption("Remove a Repository", new RemoveRepositoryCommand()),
-            new MenuOption("REMOVE ALL REPOSITORIES", new RemoveAllReposCommand()),
+            new MenuOption("REMOVE ALL REPOSITORIES", new RemoveAllReposCommand()){
+                OptionStyle = new(Spectre.Console.Color.Red)
+            },
             ];
 
         private GitRepositoryManager _manager = GitRepositoryManager.Instance;
@@ -21,7 +23,11 @@ namespace GitTools.Screens
         {
             Menu menu = new(_options);
             menu.Config.Title = MenuUtils.GetRepoInfoTitle;
-            menu.ShowAndSelect();
+            menu.Config.ShowMenuAgainOnCompletedCommand = false;
+            if (menu.AskAndSelect() != "Exit")
+            {
+                Show();
+            }
         }
     }
 }

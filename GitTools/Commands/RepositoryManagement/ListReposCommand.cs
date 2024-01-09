@@ -12,7 +12,7 @@ namespace GitTools.Commands.RepositoryManagement
             table.AddColumn("Is Clean");
             foreach (GitRepository repo in Manager.RepositoryList)
             {
-                table.AddRow($"[link]{repo.LocalPath}[/]", repo.IsClean ? "[red]Yes[/]" : "[green]No[/]");
+                table.AddRow($"[link]{repo.LocalPath}[/]", repo.IsClean ? "[green]Yes[/]" : "[red]No[/]");
             }
             AnsiConsole.Write(table);
             AnsiConsole.MarkupLine("\n\n");
