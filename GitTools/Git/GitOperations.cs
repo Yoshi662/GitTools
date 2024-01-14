@@ -61,7 +61,7 @@ namespace GitTools.Git
         }
         public static async Task<bool> IsPathARepoAsync(string localPath)
         {
-            return RunGitCommand(localPath, "rev-parse --is-inside-work-tree").Output == "true\n";
+            return RunGitCommand(localPath, "rev-parse --is-inside-work-tree").Output.StartsWith("true");
         }
 
         public static async Task<string> GetTopLevelPathAsync(string localPath)
@@ -76,7 +76,7 @@ namespace GitTools.Git
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "git",
-                    Arguments = args,
+                    Arguments = localPath == "" ? args : $" {args} -C '{localPath}'",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

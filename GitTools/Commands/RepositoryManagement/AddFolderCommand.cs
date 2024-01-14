@@ -9,7 +9,7 @@ namespace GitTools.Commands.RepositoryManagement
         public override bool Run()
         {
             string path = AnsiConsole.Ask<string>("Please enter the Path of the Folder: ");
-            List<string> repos = new List<string>();
+            List<string> repos = [];
             List<Task> tasks = [];
 
             if (!Directory.Exists(path))
@@ -22,7 +22,7 @@ namespace GitTools.Commands.RepositoryManagement
             {
                 ctx.Spinner(Spinner.Known.Star);
                 ctx.SpinnerStyle(Style.Parse("green"));
-                RecursiveSearch(path, ref repos);
+                repos.AddRange(Search(path));
             });
 
             repos = repos
@@ -52,21 +52,28 @@ namespace GitTools.Commands.RepositoryManagement
             return true;
         }
 
-        private void RecursiveSearch(string path, ref List<string> repos)
+        private List<string> Search(string path)
         {
-            string[] folders = Directory.GetDirectories(path);
-            if (folders.Contains(".git") || GitOperations.IsPathARepoAsync(path).Result)
+            List<string> repos = [];
+            List<Task> tasks = []; 
+            string[] folders = Directory.GetDirectories(path, "*.git", new EnumerationOptions()
             {
-                repos.Add(path);
-                return;
-            }
-            else
+                IgnoreInaccessible = true,
+                RecurseSubdirectories = true,
+                AttributesToSkip = FileAttributes.None
+            });
+            foreach (var folder in folders)
             {
-                foreach (string folder in folders)
+                Task task = new(() =>
                 {
-                    RecursiveSearch(folder, ref repos);
-                }
+                    if (GitOperations.IsPathARepoAsync(folder).Result)
+                        repos.Add(folder.Replace(".git",""));
+                });
+                tasks.Add(task);
+                task.Start();
             }
+            Task.WhenAll(tasks).Wait();
+            return repos;
         }
     }
 }

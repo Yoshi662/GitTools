@@ -11,10 +11,10 @@
 		- Fetch
 		- Pull
 	- Individual repo operations
-		- Status 
-		- Fetch
-		- Pull
-		- Push
-		- Clean
-		- Add all files and Commit
+		- Status a
+		- Fetcha
+		- Pulla
+		- Pusha
+		- Cleana
+		- Add all files and Commita
 		- Open in terminal

@@ -1,4 +1,5 @@
 ﻿using GitTools.Entities;
+using Spectre.Console;
 
 namespace GitTools.Utils
 {
@@ -10,8 +11,11 @@ namespace GitTools.Utils
                     "\n[dim italic grey]Use the arrow keys and Enter to Select[/]";
 
         public static string GetRepoInfoTitle => "[bold underline green]Please select an Option[/]" +
-                    $"\n\n[yellow4]Tracked Repositories: [/]{_manager.RepositoryList.Count}" +
-                    $"\n[orange4]Dirty Repositories: [/]{_manager.RepositoryList.Where(r => !r.IsClean).Count()}" +
+                    $"\n\n[{CleanStyle.Foreground}]Tracked Repositories: [/]{_manager.RepositoryList.Count}" +
+                    $"\n[{DirtyStyle.Foreground}]Dirty Repositories: [/]{_manager.RepositoryList.Where(r => !r.IsClean).Count()}" +
                     "\n[dim italic grey]Use the arrow keys and Enter to Select[/]";
+
+        public static Style CleanStyle = new(Color.GreenYellow);
+        public static Style DirtyStyle = new(Color.Orange4);
     }
 }

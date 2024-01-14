@@ -17,8 +17,9 @@ namespace GitTools.Screens
         {
             if (!Git.GitOperations.Exists())
             {
-                AnsiConsole.MarkupLine("[red]Git is not installed[/]");
+                AnsiConsole.MarkupLine("[red]Git is not installed\nProgram functionality is limited[/]\n[underline]Press any key to continue[/]");
                 _options.RemoveRange(1, 2);
+                Console.ReadKey();
             }
         }
 

@@ -3,14 +3,15 @@ using Spectre.Console;
 
 namespace GitTools.Commands.OperationsSingleRepo
 {
-    public class GetRepoStatusCommand : BaseSingleRepoCommand
+    public class CleanCommand : BaseSingleRepoCommand
     {
         public override bool Run()
         {
-            AnsiConsole.Write(GitOperations.StatusRepositoryAsync(SelectedRepo).Result);
-            Console.ReadKey();
+            bool result = GitOperations.CleanRepositoryAsync(SelectedRepo).Result;
+            ShowResponse(result, "Fetch");
             return true;
         }
     }
+
 }
 

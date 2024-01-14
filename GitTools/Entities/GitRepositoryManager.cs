@@ -23,7 +23,7 @@ namespace GitTools.Entities
             RepositoryList = new List<GitRepository>();
             if (!File.Exists(_repoPath)) File.WriteAllText(_repoPath, "[]");
             Load();
-            RemoveDuplicatesAndSave();
+            CleanCurrentListAndSave();
         }
 
         public static GitRepositoryManager Instance => _instance ??= new GitRepositoryManager();
@@ -39,13 +39,20 @@ namespace GitTools.Entities
             File.WriteAllText(_repoPath, JsonSerializer.Serialize(RepositoryList, _serializerOptions));
         }
 
-        public void RemoveDuplicatesAndSave()
+        public void CleanCurrentListAndSave()
         {
+            //Sanitizes paths
+            RepositoryList.ForEach(r => r.LocalPath = Path.GetFullPath(r.LocalPath));
+            //Removes duplicates and sorts
             if (RepositoryList != RepositoryList.Distinct().ToList())
             {
                 RepositoryList = RepositoryList.Distinct().ToList();
-                Save();
             }
+            RepositoryList.Sort
+            (
+                (r1, r2) => String.Compare(r1.LocalPath, r2.LocalPath, StringComparison.Ordinal)
+            );
+            Save();
         }
     }
 }

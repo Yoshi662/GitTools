@@ -1,5 +1,6 @@
 ﻿using GitTools.Git;
 using Spectre.Console;
+using System.Threading.Tasks;
 
 namespace GitTools.Commands.OperationsAllRepos
 {
@@ -7,16 +8,25 @@ namespace GitTools.Commands.OperationsAllRepos
     {
         public override bool Run()
         {
+            List<Task> tasks = [];
+            Manager.RepositoryList.ForEach(async repo =>
+            {
+                tasks.Add(new Task(async () =>
+                {
+                    repo.IsClean = await GitOperations.IsRepoCleanAsync(repo.LocalPath);
+                }));
+            });
+            tasks.ForEach(t => t.Start());
             AnsiConsole.Status().Start("Updating Status... Please wait", ctx =>
             {
                 ctx.Spinner(Spinner.Known.Star);
                 ctx.SpinnerStyle(Style.Parse("green"));
-                Manager.RepositoryList.ForEach(async repo =>
-                {
-                    repo.IsClean = await GitOperations.IsRepoCleanAsync(repo.LocalPath);
-                });
+                Task.WhenAll(tasks).Wait();
                 Manager.Save();
             });
+
+            ShowStatus(tasks);
+
             return true;
         }
     }

@@ -24,6 +24,9 @@ namespace GitTools.Commands.OperationsAllRepos
                 ctx.SpinnerStyle(Style.Parse("green"));
                 Task.WhenAll(tasks).Wait();
             });
+
+            ShowStatus(tasks);
+
             return true;
         }
     }
