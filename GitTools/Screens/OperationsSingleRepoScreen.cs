@@ -30,6 +30,7 @@ namespace GitTools.Screens
 
         public void Show()
         {
+
             SelectRepo();
             SelectRepoOperations();
         }

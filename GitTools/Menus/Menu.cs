@@ -59,7 +59,6 @@ namespace GitTools.Menus
             MenuOption selectedOption = Options.Find(o => o.MarkupOptionName == option);
             selectedOption.Command.Run();
             if (selectedOption.Command is ExitCommand) return selectedOption.OptionName;
-            if (Config.ShowMenuAgainOnCompletedCommand) AskAndSelect();
             return selectedOption.OptionName;
         }
     }
