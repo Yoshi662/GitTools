@@ -40,10 +40,10 @@ namespace GitTools.Menus
             return Select(Ask());
         }
 
-        public string Ask()
+        public string Ask(bool ClearConsole = true)
         {
             string[] choicelist = Options.Select(o => o.MarkupOptionName).ToArray();
-            AnsiConsole.Clear();
+            if(ClearConsole) AnsiConsole.Clear();
             string response = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title(Config.Title)

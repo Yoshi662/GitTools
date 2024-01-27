@@ -66,8 +66,10 @@ namespace GitTools.Commands.RepositoryManagement
             {
                 Task task = new(() =>
                 {
-                    if (GitOperations.IsPathARepoAsync(folder).Result)
-                        repos.Add(folder.Replace(".git",""));
+                    var sanitiedFolder = folder.Replace(".git", "");
+
+                    if (GitOperations.IsPathARepoAsync(sanitiedFolder).Result)
+                        repos.Add(sanitiedFolder);
                 });
                 tasks.Add(task);
                 task.Start();

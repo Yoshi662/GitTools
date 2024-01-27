@@ -76,7 +76,7 @@ namespace GitTools.Git
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "git",
-                    Arguments = localPath == "" ? args : $" {args} -C '{localPath}'",
+                    Arguments = args,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

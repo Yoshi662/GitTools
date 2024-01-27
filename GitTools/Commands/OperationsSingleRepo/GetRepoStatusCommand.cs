@@ -7,7 +7,7 @@ namespace GitTools.Commands.OperationsSingleRepo
     {
         public override bool Run()
         {
-            AnsiConsole.Write(GitOperations.StatusRepositoryAsync(SelectedRepo).Result);
+            AnsiConsole.MarkupLine(GitOperations.StatusRepositoryAsync(SelectedRepo).Result);
             Console.ReadKey();
             return true;
         }

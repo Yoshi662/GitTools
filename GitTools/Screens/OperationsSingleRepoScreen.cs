@@ -1,4 +1,5 @@
-﻿using GitTools.Commands.OperationsAllRepos;
+﻿
+using GitTools.Commands.OperationsAllRepos;
 using GitTools.Commands.OperationsSingleRepo;
 using GitTools.Entities;
 using GitTools.Menus;
@@ -10,18 +11,18 @@ namespace GitTools.Screens
 {
     public class OperationsSingleRepoScreen : IScreen
     {
-        private string _selectedRepo = "";
+        private GitRepository _selectedRepo = null;
 
         private List<MenuOption> _options = [
-           new MenuOption("Get Status", new GetRepoStatusCommand()),
-            new MenuOption("Fetch" , new FetchCommand()),
-            new MenuOption("Pull" , new PullCommand()),
-            new MenuOption("Push" , new PushCommand()),
-            new MenuOption("Clean" , new CleanCommand()),
-            new MenuOption("Add all files and Commit" , new AddAllAndCommitCommand()),
-            new MenuOption("Open in Terminal" , new OpenInTerminalCommand()),
-            new MenuOption("Open in Explorer" , new OpenInExplorerCommand()),
-            new MenuOption("Change Repository", new ChangeRepositoryCommand())
+            new("Get Status", new GetRepoStatusCommand()),
+            new("Fetch" , new FetchCommand()),
+            new("Pull" , new PullCommand()),
+            new("Push" , new PushCommand()),
+            new("Clean" , new CleanCommand()),
+            new("Add all files and Commit" , new AddAllAndCommitCommand()),
+            new("Open in Terminal" , new OpenInTerminalCommand()),
+            new("Open in Explorer" , new OpenInExplorerCommand()),
+            new("Change Repository", new ChangeRepositoryCommand())
             ];
 
 
@@ -29,9 +30,7 @@ namespace GitTools.Screens
 
         public void Show()
         {
-            if (String.IsNullOrWhiteSpace(_selectedRepo))
-                SelectRepo();
-
+            SelectRepo();
             SelectRepoOperations();
         }
 
@@ -39,13 +38,17 @@ namespace GitTools.Screens
         {
             Menu menu = new(_options);
             menu.Config.Title = MenuUtils.GetTitle;
-            if (menu.AskAndSelect() == "Change Repository")
+            AnsiConsole.MarkupLine($"Selected Repo: [{(_selectedRepo.IsClean ? MenuUtils.CleanStyle.ToMarkup() : MenuUtils.DirtyStyle.ToMarkup())}]{_selectedRepo.LocalPath}[/]\n");
+            string option = menu.Ask(false);
+            if (option == _options.Last().MarkupOptionName)
             {
-                _selectedRepo = "";
-                menu.Config.ShowMenuAgainOnCompletedCommand = false;
-                Show();
+                SelectRepo();
+                SelectRepoOperations();
             }
-               
+            else
+            {
+                menu.Select(option);
+            }
         }
 
         private void SelectRepo()
@@ -58,14 +61,14 @@ namespace GitTools.Screens
                 )
                 .ToList();
             var styledanswer = new Menu(options).Ask();
-            _selectedRepo = options.Find(o => o.MarkupOptionName == styledanswer).OptionName;
+            _selectedRepo = _manager.RepositoryList.Find(r => r.LocalPath == options.Find(o => o.MarkupOptionName == styledanswer).OptionName);
             
             UpdateRepoCommands();
         }
 
         private void UpdateRepoCommands()
         {
-            _options.ForEach(o => (o.Command as BaseSingleRepoCommand).SelectedRepo = _selectedRepo);
+            _options.ForEach(o => (o.Command as BaseSingleRepoCommand).SelectedRepo = _selectedRepo.LocalPath);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using GitTools.Entities;
+﻿ using GitTools.Entities;
 using Spectre.Console;
 
 namespace GitTools.Commands
