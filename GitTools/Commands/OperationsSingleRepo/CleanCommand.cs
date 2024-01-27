@@ -8,7 +8,7 @@ namespace GitTools.Commands.OperationsSingleRepo
         public override bool Run()
         {
             bool result = GitOperations.CleanRepositoryAsync(SelectedRepo).Result;
-            ShowResponse(result, "Fetch");
+            ShowResponse(result, "Clean");
             return true;
         }
     }
