@@ -9,7 +9,12 @@ namespace GitTools.Commands.OperationsSingleRepo
         {
             try
             {
-                Process.Start(SelectedRepo);
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "Explorer.exe",
+                    Arguments = $@"{SelectedRepo}",
+                    UseShellExecute = false
+                });
                 return true;
             }
             catch (Exception)

@@ -61,15 +61,20 @@ namespace GitTools.Screens
                     }
                 )
                 .ToList();
-            var styledanswer = new Menu(options).Ask();
-            _selectedRepo = _manager.RepositoryList.Find(r => r.LocalPath == options.Find(o => o.MarkupOptionName == styledanswer).OptionName);
+            var styledanswer = new Menu(
+                options, new MenuConfiguration()
+                {
+                    HasBack = false,     
+                })
+                .Ask();        
+            _selectedRepo = _manager.RepositoryList.FirstOrDefault(r => r.LocalPath == options.Find(o => o.MarkupOptionName == styledanswer)?.OptionName);
             
             UpdateRepoCommands();
         }
 
         private void UpdateRepoCommands()
         {
-            _options.ForEach(o => (o.Command as BaseSingleRepoCommand).SelectedRepo = _selectedRepo.LocalPath);
+            _options.ForEach(o => (o.Command as BaseSingleRepoCommand).SelectedRepo = _selectedRepo?.LocalPath);
         }
     }
 }

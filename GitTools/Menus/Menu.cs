@@ -6,7 +6,7 @@ namespace GitTools.Menus
 {
     public class Menu : IMenu
     {
-        List<MenuOption> Options;
+        public List<MenuOption> Options;
         public MenuConfiguration Config;
         public static MenuConfiguration DefaultMenuConfig = new(
                 MenuUtils.GetTitle,

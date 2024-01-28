@@ -9,13 +9,19 @@ namespace GitTools.Commands.OperationsSingleRepo
         {
             try
             {
-                Process.Start($"wt.exe -d {SelectedRepo}");
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "wt.exe",
+                    Arguments = $@"-d {SelectedRepo}",
+                    UseShellExecute = false
+                });
                 return true;
             }
             catch (Exception)
             {
                 AnsiConsole.MarkupLine("[red]Failed to open terminal.[/]" +
                     "Make sure Windows Terminal is installed");
+                Console.ReadKey();
                 return false;
             }
         }
