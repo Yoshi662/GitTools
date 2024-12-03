@@ -10,12 +10,11 @@ namespace GitTools.Commands.OperationsAllRepos
             List<Task> tasks = [];
             foreach (var item in Manager.RepositoryList.Where(r => r.IsClean))
             {
-                Task task = new(async () =>
+                Task<bool> task =  Task.Run(async () =>
                 {
-                    await GitOperations.FetchRepositoryAsync(item.LocalPath);
+                   return await GitOperations.FetchRepositoryAsync(item.LocalPath);
                 });
                 tasks.Add(task);
-                task.Start();
             }
 
             AnsiConsole.Status().Start("Fetching All Repos... Please wait", ctx =>

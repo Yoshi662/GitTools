@@ -11,6 +11,8 @@ namespace GitTools.Screens
             new MenuOption("Update Status", new UpdateStatusAllCommand()),
             new MenuOption("Fetch All", new FetchAllCommand()),
             new MenuOption("Pull all", new PullAllCommand()),
+            new MenuOption("Checkout all to master", new CheckoutToMasterCommand()
+                
             ];
 
         private GitRepositoryManager _manager = GitRepositoryManager.Instance;

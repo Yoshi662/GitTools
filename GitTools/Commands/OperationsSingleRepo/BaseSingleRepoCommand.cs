@@ -10,14 +10,7 @@ namespace GitTools.Commands.OperationsSingleRepo
 
         internal void ShowResponse(bool status, string action)
         {
-            if (status)
-            {
-                AnsiConsole.MarkupLine($"[green]{action} completed[/]");
-            }
-            else
-            {
-                AnsiConsole.MarkupLine($"[red]{action} failed[/]");
-            }
+            AnsiConsole.MarkupLine(status ? $"[green]{action} completed[/]" : $"[red]{action} failed[/]");
             Console.ReadKey();
         }
     }

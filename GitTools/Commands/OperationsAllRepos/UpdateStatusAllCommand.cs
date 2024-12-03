@@ -14,6 +14,7 @@ namespace GitTools.Commands.OperationsAllRepos
                 tasks.Add(new Task(async () =>
                 {
                     repo.IsClean = await GitOperations.IsRepoCleanAsync(repo.LocalPath);
+                    repo.CurrentBranch = await GitOperations.GetCurrentBranchAsync(repo.LocalPath);
                 }));
             });
             tasks.ForEach(t => t.Start());
@@ -26,6 +27,7 @@ namespace GitTools.Commands.OperationsAllRepos
             });
 
             ShowStatus(tasks);
+            Manager.Save();
 
             return true;
         }

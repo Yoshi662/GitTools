@@ -3,7 +3,7 @@ using Spectre.Console;
 
 namespace GitTools.Commands.OperationsAllRepos
 {
-    public class PullAllCommand : RepoManagerCommand
+    public class CheckoutToMasterCommand : RepoManagerCommand
     {
         public override bool Run()
         {
@@ -12,12 +12,16 @@ namespace GitTools.Commands.OperationsAllRepos
             {
                 Task<bool> task =  Task.Run(async () =>
                 {
-                   return await GitOperations.PullRepositoryAsync(item.LocalPath);
+                   bool trytomaster = await GitOperations.CheckoutBranchAsync(item.LocalPath, "master");
+                   if (trytomaster)
+                       return true;
+
+                   return await GitOperations.CheckoutBranchAsync(item.LocalPath, "main");
                 });
                 tasks.Add(task);
             }
 
-            AnsiConsole.Status().Start("Pulling All Repos... Please wait", ctx =>
+            AnsiConsole.Status().Start("Checkout to master in All Repos... Please wait", ctx =>
             {
                 ctx.Spinner(Spinner.Known.Star);
                 ctx.SpinnerStyle(Style.Parse("green"));

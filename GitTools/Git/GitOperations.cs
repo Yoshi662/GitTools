@@ -69,6 +69,23 @@ namespace GitTools.Git
             ProcessResponse response = RunGitCommand(localPath, "rev-parse --show-toplevel");
             return response.Success ? response.Output : "";
         }
+
+        public static async Task<string> GetCurrentBranchAsync(string localPath)
+        {
+            ProcessResponse response = RunGitCommand(localPath, "branch --show-current");
+            return response.Success ? response.Output.Trim() : "";
+        }
+        
+        public static async Task<string> ListBranchAsync(string localPath)
+        {
+            return RunGitCommand(localPath, "branch --no-color").Output;
+        }
+        
+        public static async Task<bool> CheckoutBranchAsync(string localPath, string branchName)
+        {
+            return RunGitCommand(localPath, $"checkout {branchName}").Success;
+        }
+        
         public static ProcessResponse RunGitCommand(string localPath, string args)
         {
             var process = new Process

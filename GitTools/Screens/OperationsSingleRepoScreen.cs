@@ -22,7 +22,9 @@ namespace GitTools.Screens
             new("Add all files and Commit" , new AddAllAndCommitCommand()),
             new("Open in Terminal" , new OpenInTerminalCommand()),
             new("Open in Explorer" , new OpenInExplorerCommand()),
-            new("Change Repository", new ChangeRepositoryCommand())
+            new("Checkout Branch", new CheckoutBranchCommand()),
+            new("List Branch", new ListBranchCommand()),
+            new("Change Repository", new ChangeRepositoryCommand()) //this must always be the last option
             ];
 
 
@@ -30,7 +32,6 @@ namespace GitTools.Screens
 
         public void Show()
         {
-
             SelectRepo();
             SelectRepoOperations();
         }

@@ -22,7 +22,8 @@ namespace GitTools.Commands.RepositoryManagement
             }
 
             bool isClean = GitOperations.IsRepoCleanAsync(path).Result;
-            Manager.RepositoryList.Add(new GitRepository(path, isClean));
+            string branch = GitOperations.GetCurrentBranchAsync(path).Result;
+            Manager.RepositoryList.Add(new GitRepository(path, isClean, branch));
             Manager.Save();
             return true;
         }

@@ -36,7 +36,8 @@ namespace GitTools.Commands.RepositoryManagement
                 Task task = new Task(async () =>
                 {
                     bool isDirty = await GitOperations.IsRepoCleanAsync(repo);
-                    Manager.RepositoryList.Add(new GitRepository(repo, isDirty));
+                    string branch = await GitOperations.GetCurrentBranchAsync(repo);
+                    Manager.RepositoryList.Add(new GitRepository(repo, isDirty, branch));
                 });
                 tasks.Add(task);
                 task.Start();
@@ -56,7 +57,7 @@ namespace GitTools.Commands.RepositoryManagement
         {
             List<string> repos = [];
             List<Task> tasks = []; 
-            string[] folders = Directory.GetDirectories(path, "*.git", new EnumerationOptions()
+            string[] folders = Directory.GetDirectories(path, ".git", new EnumerationOptions()
             {
                 IgnoreInaccessible = true,
                 RecurseSubdirectories = true,
@@ -64,17 +65,17 @@ namespace GitTools.Commands.RepositoryManagement
             });
             foreach (var folder in folders)
             {
-                Task task = new(() =>
+                Task task = Task.Run(async () =>
                 {
                     var sanitiedFolder = folder.Replace(".git", "");
 
-                    if (GitOperations.IsPathARepoAsync(sanitiedFolder).Result)
+                    if (await GitOperations.IsPathARepoAsync(sanitiedFolder))
                         repos.Add(sanitiedFolder);
                 });
                 tasks.Add(task);
-                task.Start();
             }
             Task.WhenAll(tasks).Wait();
+            
             return repos;
         }
     }

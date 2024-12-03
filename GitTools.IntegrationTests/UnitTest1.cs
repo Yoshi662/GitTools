@@ -19,11 +19,11 @@ namespace GitTools.IntegrationTests
             {
                 if(Random.Shared.Next(10) < 5)
                 {
-                    var repo = new GitRepository(arrenger.CreateCleanRepo(), true);
+                    var repo = new GitRepository(arrenger.CreateCleanRepo(), true, "main");
                     GitRepositoryManager.Instance.RepositoryList.Add(repo);
                 } else
                 {
-                    var repo = new GitRepository(arrenger.CreateDirtyRepo(), false);
+                    var repo = new GitRepository(arrenger.CreateDirtyRepo(), false, "main");
                     GitRepositoryManager.Instance.RepositoryList.Add(repo);
                 }
             }
