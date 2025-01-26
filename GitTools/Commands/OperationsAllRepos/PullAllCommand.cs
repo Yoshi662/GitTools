@@ -16,16 +16,7 @@ namespace GitTools.Commands.OperationsAllRepos
                 });
                 tasks.Add(task);
             }
-
-            AnsiConsole.Status().Start("Pulling All Repos... Please wait", ctx =>
-            {
-                ctx.Spinner(Spinner.Known.Star);
-                ctx.SpinnerStyle(Style.Parse("green"));
-                Task.WhenAll(tasks).Wait();
-            });
-
-            ShowStatus(tasks);
-
+            ShowProgress(tasks, "Pulling All Repos... Please wait");
             return true;
         }
     }

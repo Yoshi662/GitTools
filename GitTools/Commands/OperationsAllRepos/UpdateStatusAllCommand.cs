@@ -18,15 +18,8 @@ namespace GitTools.Commands.OperationsAllRepos
                 }));
             });
             tasks.ForEach(t => t.Start());
-            AnsiConsole.Status().Start("Updating Status... Please wait", ctx =>
-            {
-                ctx.Spinner(Spinner.Known.Star);
-                ctx.SpinnerStyle(Style.Parse("green"));
-                Task.WhenAll(tasks).Wait();
-                Manager.Save();
-            });
-
-            ShowStatus(tasks);
+            ShowStatus(tasks, "Updating Status... Please wait");
+            
             Manager.Save();
 
             return true;
