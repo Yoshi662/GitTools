@@ -15,10 +15,11 @@ namespace GitTools.Commands.OperationsAllRepos
                 {
                     repo.IsClean = await GitOperations.IsRepoCleanAsync(repo.LocalPath);
                     repo.CurrentBranch = await GitOperations.GetCurrentBranchAsync(repo.LocalPath);
+                    repo.LastCommit = await GitOperations.GetDateOfLastCommitAsync(repo.LocalPath);
                 }));
             });
             tasks.ForEach(t => t.Start());
-            ShowStatus(tasks, "Updating Status... Please wait");
+            ShowProgress(tasks, "Updating Status... Please wait");
             
             Manager.Save();
 

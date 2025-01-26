@@ -1,5 +1,4 @@
 ﻿using GitTools.Entities;
-
 using System.Diagnostics;
 
 namespace GitTools.Git
@@ -22,10 +21,12 @@ namespace GitTools.Git
         {
             return RunGitCommand(localPath, "pull").Success;
         }
+
         public static async Task<bool> CleanRepositoryAsync(string localPath)
         {
             return RunGitCommand(localPath, "clean -fdx").Success;
         }
+
         public static async Task<bool> PushRepositoryAsync(string localPath)
         {
             return RunGitCommand(localPath, "push").Success;
@@ -35,6 +36,7 @@ namespace GitTools.Git
         {
             return RunGitCommand(localPath, "fetch").Success;
         }
+
         public static async Task<string> StatusRepositoryAsync(string localPath)
         {
             var result = RunGitCommand(localPath, "status");
@@ -55,10 +57,12 @@ namespace GitTools.Git
             else
                 return false;
         }
+
         public static async Task<bool> IsRepoCleanAsync(string localPath)
         {
             return RunGitCommand(localPath, "status --porcelain").Output == "";
         }
+
         public static async Task<bool> IsPathARepoAsync(string localPath)
         {
             return RunGitCommand(localPath, "rev-parse --is-inside-work-tree").Output.StartsWith("true");
@@ -75,17 +79,28 @@ namespace GitTools.Git
             ProcessResponse response = RunGitCommand(localPath, "branch --show-current");
             return response.Success ? response.Output.Trim() : "";
         }
-        
+
         public static async Task<string> ListBranchAsync(string localPath)
         {
             return RunGitCommand(localPath, "branch --no-color").Output;
         }
-        
+
         public static async Task<bool> CheckoutBranchAsync(string localPath, string branchName)
         {
             return RunGitCommand(localPath, $"checkout {branchName}").Success;
         }
-        
+
+        public static async Task<DateTime> GetDateOfLastCommitAsync(string localPath)
+        {
+            var processresult = RunGitCommand(localPath, "log -1 --format=\"%at\"");
+            return processresult.Success ? 
+                DateTimeOffset.FromUnixTimeSeconds(
+                    Convert.ToInt64(
+                        processresult.Output.Trim()))
+                            .UtcDateTime : 
+                DateTime.MinValue;
+        }
+
         public static ProcessResponse RunGitCommand(string localPath, string args)
         {
             var process = new Process

@@ -8,7 +8,7 @@ namespace GitTools.Screens
     public class OperationsAllReposScreen : IScreen
     {
         private List<MenuOption> _options = [
-            new MenuOption("Update Status", new UpdateStatusAllCommand()),
+            new MenuOption("Lists Repositories", new ListReposCommand()),
             new MenuOption("Fetch All", new FetchAllCommand()),
             new MenuOption("Pull all", new PullAllCommand()),
             new MenuOption("Checkout all to master", new CheckoutToMasterCommand())

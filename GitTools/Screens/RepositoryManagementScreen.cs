@@ -8,7 +8,6 @@ namespace GitTools.Screens
     class RepositoryManagementScreen : IScreen
     {
         private List<MenuOption> _options = [
-            new MenuOption("Lists Repositories", new ListReposCommand()),
             new MenuOption("Add a Repository", new AddRepositoryCommand()),
             new MenuOption("Scans and adds a folder", new AddFolderCommand()),
             new MenuOption("Remove a Repository", new RemoveRepositoryCommand()),
